@@ -1,33 +1,43 @@
+# AI Voice Assistant
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Voice Assistant</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    #transcript {
-      margin-top: 20px;
-      font-size: 1.2em;
-    }
-    #siri-response {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Assistant</title>
 </head>
 <body>
-  <h1>Siri-Like AI Voice Assistant</h1>
-  <button id="start-recording">Talk to Siri</button>
-  <p id="transcript">Your speech will appear here.</p>
-  <p id="siri-response">Assistant's response will appear here.</p>
+    <h1>Welcome to Your AI Voice Assistant</h1>
+    <button id="start-button">Start Assistant</button>
+    <p id="output"></p>
 
-  <script src="app.js"></script>
+    <script>
+        const output = document.getElementById('output');
+        const startButton = document.getElementById('start-button');
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.onstart = function() {
+            output.textContent = 'Listening...';
+        };
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            output.textContent = 'You said: ' + transcript;
+            respondToUser(transcript);
+        };
+
+        startButton.addEventListener('click', () => {
+            recognition.start();
+        });
+
+        function respondToUser(input) {
+            const response = `You said "${input}". How can I assist you further?`;
+            output.textContent += '\n' + response;
+        }
+    </script>
 </body>
 </html>
 
